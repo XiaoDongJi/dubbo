@@ -591,7 +591,15 @@ public class ExtensionLoader<T> {
         }
 
         Map<String, Class<?>> extensionClasses = new HashMap<String, Class<?>>();
-        //加载扩展点文件
+        //
+        /**
+         * 加载扩展点文件  主要做了几件事情
+         * 1.缓存 adaptive class
+         * 2.缓存wrapper class
+         * 3. 缓存 cachedActivates 被Activate注解的类
+         * 4. cachedClasses 缓存不是 adaptive和不是wrapper类的 key和对应的实现类
+         * 5.校验规则
+         */
         loadFile(extensionClasses, DUBBO_INTERNAL_DIRECTORY);
         loadFile(extensionClasses, DUBBO_DIRECTORY);
         loadFile(extensionClasses, SERVICES_DIRECTORY);
