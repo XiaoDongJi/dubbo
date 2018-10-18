@@ -97,7 +97,7 @@ public class ExtensionLoader<T> {
     private volatile Throwable createAdaptiveInstanceError;
     //缓存wrapper实现
     private Set<Class<?>> cachedWrapperClasses;
-    
+    //解析每一行实现类 异常记录
     private Map<String, IllegalStateException> exceptions = new ConcurrentHashMap<String, IllegalStateException>();
     //判断是否是spi注解接口
     private static <T> boolean withExtensionAnnotation(Class<T> type) {
@@ -589,8 +589,9 @@ public class ExtensionLoader<T> {
                 if(names.length == 1) cachedDefaultName = names[0];
             }
         }
-        
+
         Map<String, Class<?>> extensionClasses = new HashMap<String, Class<?>>();
+        //加载扩展点文件
         loadFile(extensionClasses, DUBBO_INTERNAL_DIRECTORY);
         loadFile(extensionClasses, DUBBO_DIRECTORY);
         loadFile(extensionClasses, SERVICES_DIRECTORY);
@@ -628,11 +629,13 @@ public class ExtensionLoader<T> {
                                         }
                                         if (line.length() > 0) {
                                             Class<?> clazz = Class.forName(line, true, classLoader);
+                                            //检查是否class是type的子类
                                             if (! type.isAssignableFrom(clazz)) {
                                                 throw new IllegalStateException("Error when load extension class(interface: " +
                                                         type + ", class line: " + clazz.getName() + "), class " 
                                                         + clazz.getName() + "is not subtype of interface.");
                                             }
+                                            //缓存adaptive子类class  同一个扩展点不能有多个adaptive子类
                                             if (clazz.isAnnotationPresent(Adaptive.class)) {
                                                 if(cachedAdaptiveClass == null) {
                                                     cachedAdaptiveClass = clazz;
@@ -643,7 +646,7 @@ public class ExtensionLoader<T> {
                                                 }
                                             } else {
                                                 try {
-                                                    //使用抛异常方式检测是否存在wapper类，以接口为入参的构造函数
+                                                    //使用抛异常方式检测是否存在wapper类，以接口为入参的构造函数 NoSuchMethodException   缓存wrapper
                                                     clazz.getConstructor(type);
                                                     Set<Class<?>> wrappers = cachedWrapperClasses;
                                                     if (wrappers == null) {
@@ -670,6 +673,7 @@ public class ExtensionLoader<T> {
                                                         if (activate != null) {
                                                             cachedActivates.put(names[0], activate);
                                                         }
+                                                        //记录不是adpative 不是 wrapper的类
                                                         for (String n : names) {
                                                             if (! cachedNames.containsKey(clazz)) {
                                                                 cachedNames.put(clazz, n);
