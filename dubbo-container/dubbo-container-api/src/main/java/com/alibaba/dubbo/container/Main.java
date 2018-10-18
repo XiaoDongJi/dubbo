@@ -56,7 +56,7 @@ public class Main {
                 containers.add(loader.getExtension(args[i]));
             }
             logger.info("Use container type(" + Arrays.toString(args) + ") to run dubbo serivce.");
-            
+            //jvm中增加关闭的钩子，会在jvm关闭前执行添加的逻辑  脚本关闭 kill pid 会优雅关闭应用
             if ("true".equals(System.getProperty(SHUTDOWN_HOOK_KEY))) {
 	            Runtime.getRuntime().addShutdownHook(new Thread() {
 	                public void run() {
@@ -86,6 +86,7 @@ public class Main {
             logger.error(e.getMessage(), e);
             System.exit(1);
         }
+        //阻塞Main方法 让应用执行
         synchronized (Main.class) {
             while (running) {
                 try {
