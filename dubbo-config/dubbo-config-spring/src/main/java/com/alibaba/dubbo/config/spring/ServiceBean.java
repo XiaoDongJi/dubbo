@@ -124,7 +124,7 @@ public class ServiceBean<T> extends ServiceConfig<T> implements InitializingBean
         }
         return supportedApplicationListener && (delay == null || delay.intValue() == -1);
     }
-    //初始化 ServiceBean得时候调用该方法  实现了 Spring InitializingBean 接口
+    //实现initializingBean接口  初始化ServiceBean得时候调用该方法
     @SuppressWarnings({ "unchecked", "deprecation" })
 	public void afterPropertiesSet() throws Exception {
         if (getProvider() == null) {

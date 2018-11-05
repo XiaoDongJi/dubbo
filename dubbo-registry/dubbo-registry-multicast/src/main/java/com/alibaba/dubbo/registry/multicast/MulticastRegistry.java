@@ -53,7 +53,7 @@ import com.alibaba.dubbo.registry.support.FailbackRegistry;
  */
 public class MulticastRegistry extends FailbackRegistry {
 
-    // 日志输出
+    // 日志输出Driver
     private static final Logger logger = LoggerFactory.getLogger(MulticastRegistry.class);
 
     private static final int DEFAULT_MULTICAST_PORT = 1234;

@@ -1,2 +1,0 @@
-A=com.alibaba.dubbo.demo.provider.SayHelloAImpl
-B=com.alibaba.dubbo.demo.provider.SayHelloBImpl

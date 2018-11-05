@@ -114,7 +114,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
 	public boolean isUnexported() {
 		return unexported;
 	}
-
+    //防止重复暴露  加锁
     public synchronized void export() {
         if (provider != null) {
             if (export == null) {
