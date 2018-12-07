@@ -127,6 +127,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
         if (export != null && ! export.booleanValue()) {
             return;
         }
+        //延迟暴露
         if (delay != null && delay > 0) {
             Thread thread = new Thread(new Runnable() {
                 public void run() {
@@ -486,6 +487,7 @@ public class ServiceConfig<T> extends AbstractServiceConfig {
                             logger.info("Register dubbo service " + interfaceClass.getName() + " url " + url + " to registry " + registryURL);
                         }
                         // 通过代理工厂将url转化成invoker对象，proxyFactory的实现是JavassistProxyFactory
+                        //registry://127.0.0.1:2181/com.alibaba.dubbo.registry.RegistryService?application=demo-provider&dubbo=2.0.0&export=dubbo%3A%2F%2F10.30.124.142%3A20880%2Fcom.alibaba.dubbo.demo.DemoService%3Fanyhost%3Dtrue%26application%3Ddemo-provider%26dubbo%3D2.0.0%26generic%3Dfalse%26interface%3Dcom.alibaba.dubbo.demo.DemoService%26loadbalance%3Droundrobin%26methods%3DsayHello%26owner%3Dwilliam%26pid%3D13568%26revision%3D1.0.0%26scope%3Dremote%26side%3Dprovider%26timeout%3D9000000%26timestamp%3D1543656226055%26version%3D1.0.0&owner=william&pid=13568&registry=zookeeper&timestamp=1543656158691
                         Invoker<?> invoker = proxyFactory.getInvoker(ref, (Class) interfaceClass, registryURL.addParameterAndEncoded(Constants.EXPORT_KEY, url.toFullString()));
                         //这里invoker对象协议是registry，protocol根据协议找到RegisterProtocol实现类
                         //ProtocolListenerWrapper -> ProtocolFilterWrapper -> RegistryProtocol

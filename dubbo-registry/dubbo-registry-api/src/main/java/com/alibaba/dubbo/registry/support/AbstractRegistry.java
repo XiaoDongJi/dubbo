@@ -91,6 +91,7 @@ public abstract class AbstractRegistry implements Registry {
         setUrl(url);
         // 启动文件保存定时器
         syncSaveFile = url.getParameter(Constants.REGISTRY_FILESAVE_SYNC_KEY, false);
+        //C:\Users\JIXD/.dubbo/dubbo-registry-127.0.0.1.cache
         String filename = url.getParameter(Constants.FILE_KEY, System.getProperty("user.home") + "/.dubbo/dubbo-registry-" + url.getHost() + ".cache");
         File file = null;
         if (ConfigUtils.isNotEmpty(filename)) {
