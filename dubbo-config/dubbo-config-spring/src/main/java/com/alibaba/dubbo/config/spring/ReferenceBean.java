@@ -60,7 +60,7 @@ public class ReferenceBean<T> extends ReferenceConfig<T> implements FactoryBean,
 		this.applicationContext = applicationContext;
 		SpringExtensionFactory.addApplicationContext(applicationContext);
 	}
-    
+    //对应的服务被注入到其他类中时引用
     public Object getObject() throws Exception {
         return get();
     }
@@ -74,6 +74,7 @@ public class ReferenceBean<T> extends ReferenceConfig<T> implements FactoryBean,
         return true;
     }
 
+    //<dubbo:reference> 的 init 属性开启  初始化完成后引用服务
     @SuppressWarnings({ "unchecked"})
     public void afterPropertiesSet() throws Exception {
         if (getConsumer() == null) {

@@ -392,6 +392,7 @@ public class RegistryDirectory<T> extends AbstractDirectory<T> implements Notify
                 		enabled = url.getParameter(Constants.ENABLED_KEY, true);
                 	}
                 	if (enabled) {
+                	    //服务引用，建立连接地方
                 		invoker = new InvokerDelegete<T>(protocol.refer(serviceType, url), url, providerUrl);
                 	}
                 } catch (Throwable t) {
